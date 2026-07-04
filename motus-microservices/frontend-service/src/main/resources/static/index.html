@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le jeu du Motus</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Connexion / Inscription -->
+<div class="overlay" id="overlay">
+    <div class="login-card">
+        <div class="login-title">MOTUS</div>
+
+        <div class="login-tabs">
+            <button class="login-tab active" id="tab-connexion">Se connecter</button>
+            <button class="login-tab" id="tab-inscription">Creer un compte</button>
+        </div>
+
+        <div id="form-connexion">
+            <input type="text" id="c-identifiant" placeholder="Pseudo ou email" autocomplete="off">
+            <input type="password" id="c-motdepasse" placeholder="Mot de passe">
+            <button class="btn-go" id="btn-connexion">Se connecter</button>
+        </div>
+
+        <div id="form-inscription" hidden>
+            <input type="text" id="i-pseudo" placeholder="Pseudo" autocomplete="off">
+            <input type="email" id="i-email" placeholder="Email" autocomplete="off">
+            <input type="password" id="i-motdepasse" placeholder="Mot de passe">
+            <input type="text" id="i-code" placeholder="Code admin (facultatif)" autocomplete="off">
+            <button class="btn-go" id="btn-inscription">Creer mon compte</button>
+        </div>
+
+        <div class="login-error" id="login-error"></div>
+    </div>
+</div>
+
+<div class="app" id="app" hidden>
+    <header class="topbar">
+        <div class="logo"><span class="grid-icon">&#9638;</span> Le jeu du <span class="motus">Motus</span></div>
+        <div class="player-zone">
+            <span class="admin-tag" id="admin-tag" hidden>ADMIN</span>
+            <button class="player-badge" id="player-badge">&#128100; <span id="player-name"></span></button>
+            <button class="logout" id="btn-logout" title="Se deconnecter">&#9099;</button>
+        </div>
+    </header>
+
+    <div class="toolbar">
+        <button class="tool" id="btn-refresh" title="Nouvelle partie">&#8635;</button>
+        <div class="dropdown">
+            <button class="tool wide" id="btn-mot">&#9776; Mot <span id="len-label">6</span> &#9662;</button>
+            <div class="menu" id="menu-len" hidden></div>
+        </div>
+        <button class="tool" id="btn-stats" title="Mes statistiques">&#128202;</button>
+        <button class="tool" id="btn-admin" title="Administration" hidden>&#128736;</button>
+        <button class="tool" id="btn-help" title="Regles">?</button>
+    </div>
+
+    <section class="game">
+        <div class="game-info">
+            <span class="partie-no" id="partie-no">Partie</span>
+            <span class="badge-len" id="badge-len"></span>
+            <span class="points" id="points">0 Pts</span>
+            <span class="timer" id="timer">00:00</span>
+        </div>
+        <div class="board" id="board"></div>
+        <div class="message" id="message"></div>
+        <div class="banner" id="banner" hidden></div>
+    </section>
+
+    <!-- Classement public, affiche automatiquement en bas -->
+    <section class="leaderboard">
+        <div class="lb-head" id="lb-head">Classement</div>
+        <div id="lb-content"></div>
+    </section>
+
+    <!-- Modale statistiques perso -->
+    <div class="modal" id="modal-stats" hidden>
+        <div class="modal-card stats-card">
+            <div class="modal-head">
+                <span id="stats-title">&#128202; Vos parties gagnees ce jour</span>
+                <button class="modal-close" id="close-stats">&#10005;</button>
+            </div>
+            <div class="stats-tabs">
+                <button class="stats-tab active" data-stat="scores">Vos scores</button>
+                <button class="stats-tab" data-stat="mots">Mots trouves</button>
+            </div>
+            <div id="stats-body"></div>
+        </div>
+    </div>
+
+    <!-- Modale administration (reservee admin) -->
+    <div class="modal" id="modal-admin" hidden>
+        <div class="modal-card admin-card">
+            <div class="modal-head">
+                <span>&#128736; Administration des parties</span>
+                <button class="modal-close" id="close-admin">&#10005;</button>
+            </div>
+            <div class="filters">
+                <label>Joueur (id) <input type="number" id="f-joueur" min="1" placeholder="tous"></label>
+                <label>Statut
+                    <select id="f-statut">
+                        <option value="">tous</option>
+                        <option value="EN_COURS">en cours</option>
+                        <option value="GAGNEE">gagnees</option>
+                        <option value="PERDUE">perdues</option>
+                    </select>
+                </label>
+                <label>Du <input type="date" id="f-du"></label>
+                <label>Au <input type="date" id="f-au"></label>
+                <button class="btn-light" id="btn-search">Rechercher</button>
+            </div>
+            <div id="admin-content"></div>
+        </div>
+    </div>
+
+    <!-- Modale regles -->
+    <div class="modal" id="modal-rules" hidden>
+        <div class="modal-card rules-card">
+            <div class="modal-head"><span>Regles</span><button class="modal-close" id="close-rules">&#10005;</button></div>
+            <p><span class="chip bien">A</span> lettre bien placee.</p>
+            <p><span class="chip mal"><span class="disc">A</span></span> lettre presente mais mal placee.</p>
+            <p><span class="chip abs">A</span> lettre absente du mot.</p>
+            <p>La premiere lettre est donnee. Tapez votre mot puis Entree. 6 essais.</p>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
